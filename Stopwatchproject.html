@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StopWatchProj</title>
+    <style>
+        body {
+            background: rgb(131,58,180);
+            background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,253,228,0.518) 50%, rgba(252,176,69,1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .timer-display {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #ddd;
+            height: 50px;
+            width: 70px;
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+        #startTimer {
+            background-color: green;
+        }
+        #pauseTimer {
+            background-color: blue;
+        }
+        #RestartTimer {
+            background-color: red;
+        }
+        button:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Stop Watch</h2>
+        <div class="timer-display">00<sub>hr</sub>:00<sub>min</sub>:00<sub>sec</sub>:00<sub>ms</sub></div>
+        <div class="buttons">
+            <button id="startTimer" onclick="start()">Start</button>
+            <button id="pauseTimer" onclick="pause()">Pause</button>
+            <button id="RestartTimer" onclick="reset()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        let ms = 0, s = 0, m = 0, h = 0;
+        let timer;
+
+        const display = document.querySelector(".timer-display");
+
+        function start() {
+            if (!timer) {
+                timer = setInterval(run, 10);
+            }
+        }
+
+        function run() {
+            display.innerHTML = getTimer();
+            ms++;
+            if (ms == 100) {
+                ms = 0;
+                s++;
+            }
+            if (s == 60) {
+                s = 0;
+                m++;
+            }
+            if (m == 60) {
+                m = 0;
+                h++;
+            }
+            if (h == 24) {
+                h = 0;
+            }
+        }
+
+        function getTimer() {
+            return (h < 10 ? "0" + h : h) + "<sub>hr</sub>:" + (m < 10 ? "0" + m : m) + " <sub>min</sub>  :" + (s < 10 ? "0" + s : s) + "<sub>sec</sub>:" + (ms < 10 ? "0" + ms : ms +"<sub>ms</sub>");
+        }
+
+        function pause() {
+            clearInterval(timer);
+            timer = null;
+        }
+
+        function reset() {
+            clearInterval(timer);
+            timer = null;
+            ms = 0;
+            s = 0;
+            m = 0;
+            h = 0;
+            display.innerHTML = getTimer();
+        }
+    </script>
+</body>
+</html>
